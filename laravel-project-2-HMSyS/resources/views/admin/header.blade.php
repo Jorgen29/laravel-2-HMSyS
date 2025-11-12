@@ -135,7 +135,22 @@
               <div aria-labelledby="languages" class="dropdown-menu"><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French  </span></a></div>
             </div>
             <!-- Log out               -->
-            <div class="list-inline-item logout">                   <a id="logout" href="login.html" class="nav-link">Logout <i class="icon-logout"></i></a></div>
+            <div class="list-inline-item logout">
+                @auth
+                <div class="dropdown">
+                  <a href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">{{ Auth::user()->name ?? 'Account' }}</a>
+                  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
+                    <a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <form method="POST" action="{{ route('logout') }}">
+                      @csrf
+                      <button type="submit" class="dropdown-item text-primary">Logout</button>
+                    </form>
+                  </div>
+                </div>
+                @endauth
+
+            </div>
           </div>
         </div>
       </nav>
