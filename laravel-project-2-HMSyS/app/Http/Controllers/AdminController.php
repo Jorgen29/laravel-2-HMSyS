@@ -50,11 +50,10 @@ class AdminController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
         ]);
 
-        // Handle file upload if an image is provided
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('rooms', 'public');
-        }
+   $image=$request->image;
+        $imageName=time().'.'.$image->getClientOriginalExtension();
+        $request->image->move('public/rooms',$imageName);
+
 
         // Create a new room record in the database
         // Assuming you have a Room model set up
@@ -64,10 +63,15 @@ class AdminController extends Controller
             'description' => $request->input('description'),
             'room_type' => $request->input('type'),
             'wifi' => $request->input('wifi'),
-            'image' => $imagePath,
+            'image' => $imageName,
         ]);
 
         return redirect()->back()->with('success', 'Room added successfully!');
 
+    }
+    public function view_room()
+    {
+        $rooms = \App\Models\Room::all();
+        return view('admin.view_rooms', compact('rooms'));
     }
 }
