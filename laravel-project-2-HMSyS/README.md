@@ -1,59 +1,140 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Hotel Management System (HMS)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern Hotel Management System built with Laravel 12, featuring comprehensive room management, user authentication, and admin dashboard with role-based access control.
 
-## About Laravel
+## Technologies Used
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Backend
+- **Laravel 12** - Modern PHP web application framework
+- **PHP 8.x** - Server-side programming language
+- **MySQL** - Relational database for data persistence
+- **Eloquent ORM** - Object-Relational Mapping for database interactions
+- **Laravel Fortify** - Lightweight authentication scaffolding
+- **Laravel Jetstream** - Application scaffolding with Livewire and Inertia support
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Frontend
+- **Bootstrap 4** - Responsive CSS framework for UI design
+- **jQuery** - JavaScript library for DOM manipulation and AJAX
+- **Font Awesome** - Icon library for intuitive UI elements
+- **Blade Templating** - Laravel's powerful templating engine
+- **HTML5 & CSS3** - Standard web technologies
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Development Tools
+- **Composer** - PHP dependency manager
+- **NPM** - JavaScript package manager
+- **Vite** - Modern frontend build tool
+- **Artisan** - Laravel command-line interface
 
-## Learning Laravel
+## Key Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Authentication & Authorization
+- User registration and login functionality
+- Two user types: Admin and Regular User
+- Role-based dashboard routing (Admin → Admin Panel, User → User Dashboard)
+- Two-factor authentication support via Fortify
+- Secure logout functionality
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Room Management (Admin Only)
+- **Create Room** - Add new rooms with title, price, type, WiFi status, and images
+- **View Rooms** - Display all rooms in a professional table format with:
+  - Room details (title, description, price, WiFi status, type)
+  - Room images with full-size image viewer modal
+  - Search functionality to filter rooms in real-time
+- **Edit Room** - Update room information via modal popup without page navigation
+- **Delete Room** - Remove rooms with confirmation dialog
+- **Image Management** - Upload and display room images with automatic file handling
 
-## Laravel Sponsors
+### User Dashboard
+- Displays available rooms for browsing
+- View room details and images
+- Role-restricted access
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Admin Dashboard
+- Comprehensive room management interface
+- Dynamic navigation with active state detection
+- Professional table layout with action buttons
+- Responsive design compatible with mobile and desktop
 
-### Premium Partners
+### Search Functionality
+- Real-time search across room titles, types, and WiFi status
+- Search from header search panel
+- Case-insensitive matching with partial search support
+- Instant table filtering without page reload
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### User Interface
+- DarkAdmin professional template design
+- Bootstrap modal popups for editing and image viewing
+- Responsive sidebar navigation
+- Dynamic navigation highlighting based on current route
+- Professional color scheme and typography
+- AJAX-powered interactions for smooth user experience
 
-## Contributing
+## Database Structure
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Users Table
+- `id` - Primary key
+- `name` - User full name
+- `email` - User email address (unique)
+- `password` - Encrypted password
+- `phone` - User phone number (nullable)
+- `usertype` - User role (admin/user)
+- `two_factor_secret` - Two-factor authentication secret
+- `two_factor_recovery_codes` - Recovery codes for 2FA
+- Timestamps (created_at, updated_at)
 
-## Code of Conduct
+### Rooms Table
+- `id` - Primary key
+- `room_title` - Name of the room
+- `description` - Detailed room description
+- `price` - Room price per night
+- `room_type` - Room category (Regular, Premium, Deluxe)
+- `wifi` - WiFi availability (yes/no)
+- `image` - Room image filename
+- Timestamps (created_at, updated_at)
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## API Endpoints
 
-## Security Vulnerabilities
+### Authentication Routes
+- `POST /login` - User login
+- `POST /register` - User registration
+- `POST /logout` - User logout
+- `GET /dashboard` - Role-based dashboard routing
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Admin Routes
+- `GET /create_room` - Room creation form
+- `POST /add_room` - Create new room
+- `GET /view_room` - View all rooms
+- `GET /get_room/{id}` - Get room details (AJAX/JSON)
+- `POST /update_room/{id}` - Update room information
+- `POST /delete_room/{id}` - Delete room
+
+## Installation & Setup
+
+1. Clone the repository
+2. Install PHP dependencies: `composer install`
+3. Install JavaScript dependencies: `npm install`
+4. Copy `.env.example` to `.env` and configure database
+5. Generate application key: `php artisan key:generate`
+6. Run migrations: `php artisan migrate`
+7. Seed database (optional): `php artisan db:seed`
+8. Build assets: `npm run build`
+9. Start development server: `php artisan serve`
+
+## File Storage
+
+- Room images are stored in `public/rooms/` directory
+- Images are automatically handled with timestamp-based naming for uniqueness
+- Old images are deleted when rooms are updated or deleted
+
+## Security Features
+
+- CSRF protection on all forms
+- Password encryption using bcrypt
+- SQL injection prevention via Eloquent ORM
+- CORS configuration for API security
+- Two-factor authentication support
+- Role-based access control (RBAC)
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the MIT license.
