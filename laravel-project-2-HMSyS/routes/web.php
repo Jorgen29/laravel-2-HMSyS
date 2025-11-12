@@ -18,7 +18,10 @@ Route::middleware([
 });
 
 Route::get('/home', [AdminController::class, 'index']);
-Route::get('/create_room', [AdminController::class, 'create_room']);
-Route::get('/view_room', [AdminController::class, 'view_room']);
+Route::get('/create_room', [AdminController::class, 'create_room'])->name('create_room');
+Route::get('/view_room', [AdminController::class, 'view_room'])->name('view_room');
+Route::get('/get_room/{id}', [AdminController::class, 'get_room'])->name('get_room');
+Route::post('/update_room/{id}', [AdminController::class, 'update_room'])->name('update_room');
+Route::delete('/delete_room/{id}', [AdminController::class, 'delete_room'])->name('delete_room');
 
 Route::post('/add_room', [AdminController::class, 'add_room']);

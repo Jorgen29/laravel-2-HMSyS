@@ -74,4 +74,60 @@ class AdminController extends Controller
         $rooms = \App\Models\Room::all();
         return view('admin.view_rooms', compact('rooms'));
     }
+
+    public function get_room($id)
+    {
+        $room = \App\Models\Room::findOrFail($id);
+        return response()->json($room);
+    }
+
+    public function update_room(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'type' => 'required|string',
+            'wifi' => 'required|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:10240',
+        ]);
+
+        $room = \App\Models\Room::findOrFail($id);
+
+        // Handle file upload if an image is provided
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if (file_exists(public_path('rooms/' . $room->image))) {
+                unlink(public_path('rooms/' . $room->image));
+            }
+
+            $image = $request->image;
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $request->image->move('public/rooms', $imageName);
+            $room->image = $imageName;
+        }
+
+        $room->room_title = $request->input('title');
+        $room->price = $request->input('price');
+        $room->description = $request->input('description');
+        $room->room_type = $request->input('type');
+        $room->wifi = $request->input('wifi');
+        $room->save();
+
+        return redirect()->route('view_room')->with('success', 'Room updated successfully!');
+    }
+
+    public function delete_room($id)
+    {
+        $room = \App\Models\Room::findOrFail($id);
+
+        // Delete image file if exists
+        if (file_exists(public_path('rooms/' . $room->image))) {
+            unlink(public_path('rooms/' . $room->image));
+        }
+
+        $room->delete();
+
+        return redirect()->route('view_room')->with('success', 'Room deleted successfully!');
+    }
 }

@@ -10,14 +10,14 @@
      <div class="page-content">
         <div class="page-header">
           <div class="container-fluid">
-            <h2 class="h5 no-margin-bottom">Add New Room</h2>
+            <h2 class="h5 no-margin-bottom">Edit Room</h2>
           </div>
         </div>
         <section class="no-padding-bottom">
           <div class="container-fluid">
-            <div class="col-lg-16">
+            <div class="col-lg-8">
               <div class="form-box block">
-                <form action="{{url('/add_room')}}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('update_room', $room->id) }}" method="post" enctype="multipart/form-data">
                   @csrf
                   
                   <!-- Row 1: Room Title and Room Price -->
@@ -25,13 +25,13 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="form-control-label">Room Title</label>
-                        <input type="text" placeholder="Enter room title" name="title" class="form-control" required>
+                        <input type="text" placeholder="Enter room title" name="title" class="form-control" value="{{ $room->room_title }}" required>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group">
                         <label class="form-control-label">Room Price</label>
-                        <input type="number" placeholder="Enter room price" name="price" class="form-control" step="0.01" required>
+                        <input type="number" placeholder="Enter room price" name="price" class="form-control" step="0.01" value="{{ $room->price }}" required>
                       </div>
                     </div>
                   </div>
@@ -42,9 +42,9 @@
                       <div class="form-group">
                         <label class="form-control-label">Room Type</label>
                         <select name="type" class="form-control" required>
-                          <option selected value="Regular">Regular</option>
-                          <option value="Premium">Premium</option>
-                          <option value="Deluxe">Deluxe</option>
+                          <option value="Regular" {{ $room->room_type == 'Regular' ? 'selected' : '' }}>Regular</option>
+                          <option value="Premium" {{ $room->room_type == 'Premium' ? 'selected' : '' }}>Premium</option>
+                          <option value="Deluxe" {{ $room->room_type == 'Deluxe' ? 'selected' : '' }}>Deluxe</option>
                         </select>
                       </div>
                     </div>
@@ -52,35 +52,48 @@
                       <div class="form-group">
                         <label class="form-control-label">Free Wifi</label>
                         <select name="wifi" class="form-control" required>
-                          <option selected value="yes">Yes</option>
-                          <option value="no">No</option>
+                          <option value="yes" {{ $room->wifi == 'yes' ? 'selected' : '' }}>Yes</option>
+                          <option value="no" {{ $room->wifi == 'no' ? 'selected' : '' }}>No</option>
                         </select>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group">
                         <label class="form-control-label">Room Image</label>
-                        <input type="file" name="image" class="form-control" accept="image/*" required>
+                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <small class="text-muted">Leave empty to keep current image</small>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Row 3: Description -->
+                  <!-- Row 3: Current Image Preview -->
+                  @if($room->image)
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label class="form-control-label">Current Image</label><br>
+                        <img src="/rooms/{{ $room->image }}" style="width: 150px; height: 150px; object-fit: cover; border-radius: 5px; border: 2px solid #444;">
+                      </div>
+                    </div>
+                  </div>
+                  @endif
+
+                  <!-- Row 4: Description -->
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
                         <label class="form-control-label">Room Description</label>
-                        <textarea placeholder="Enter room description" name="description" class="form-control" rows="5" required></textarea>
+                        <textarea placeholder="Enter room description" name="description" class="form-control" rows="5" required>{{ $room->description }}</textarea>
                       </div>
                     </div>
                   </div>
 
-                  <!-- Row 4: Buttons (Submit bottom right, Cancel) -->
+                  <!-- Row 5: Buttons (Submit bottom right, Cancel) -->
                   <div class="row">
                     <div class="col-md-12 text-right">
                       <div class="form-group">
-                        <a href="{{url('/view_room')}}" class="btn btn-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{{ route('view_room') }}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Update</button>
                       </div>
                     </div>
                   </div>
